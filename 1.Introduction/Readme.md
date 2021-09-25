@@ -502,4 +502,429 @@ for i in range(10):
 
 Exercise: Print only the odd numbers from 1 to 100
 
+# Functions
+
+## Definition
+
+Functions are a way to divide your code into useful blocks, make it more readable and reuse it. Keyword `def` introduces a function definition. It must be followed by the function name and the parenthesized list of formal parameters (which can be empty). The statements that form the body of the function start at the next line and must be indented.
+
+Functions only run when they are called. To call a function, use its name followed by parentheses
+
+```
+def hello_world_fun():  # function definition
+    print("This is a function that prints Hello World")
+
+
+hello_world_fun()   # how to call the function
+```
+
+## Parameters and call arguments
+
+Function parameters are defined inside the parentheses `()` following the function name. A parameter acts as a variable name for an argument passed to the function.
+
+The terms parameter and argument refer to the same thing: information that is passed into a function. However, a parameter is the variable listed inside the parentheses in the function definition, while an argument is the value that is sent to the function when it is called.
+
+By default, a function must be called with the correct number of arguments. If your function expects 2 arguments, you have to call it with 2 arguments:
+
+```
+def my_name(name, surname):   # function definition
+    print(name+" "+surname)
+
+my_name("Stefanos", "Kalogerakis")  # calling the function
+```
+
+## Return value
+
+Functions may return a value to the caller, using the keyword `return` . You can use the returned value to assign it to a variable or just print it out. In fact, even functions without a return statement do return a value. This value is called `None` (it’s a built-in name). Writing the value `None` is normally suppressed by the interpreter, but if you really want to see it, you can use `print(name_func())`.
+
+```
+def sum_numbers(x,y):
+    return x + y
+
+sum_numbers(3,12)   # Function that returns the sum of two numbers
+```
+
+**Exercise: Write a function that returns a list of numbers of the Fibonacci sequence up to N**
+
+## Default parameters
+
+It is also possible to define functions with a variable number of arguments. There are three forms, which can be combined. The most useful form is to specify a default value for one or more arguments. This creates a function that can be called with fewer arguments than it is defined with. For example, the function above can be called in several ways
+
+```
+def multiply_by(a, b=2, c=1):
+    return a * b + c
+```
+
+- giving only the mandatory argument a: multiply_by(3)
+
+- giving one of the optional arguments: multiply_by(3, 47), or multiply_by(3, c=47)
+
+- or even giving all arguments: multiply_by(3, 47, 0)
+
+You can specify which argument you are providing in the function call, just like we did in the third case with c=47. If you do not specify that, values will be assigned according to their order. Do not put spaces around the = symbol in function calls and definitions.
+
+## Keyword Arguments
+
+We already hinted that functions can also be called using keyword arguments of the form kwarg=value. For instance, the function testShowOff(), which we defined for you, it can be called in any of the following ways
+
+```
+def testShowOff(var1,var2='init'):
+    print(var1 + " "+ var2)
+
+
+# Alternative ways to call the function
+testShowOff('Var1')             # 1 positional argument
+testShowOff(var1='Var1_1')        # 1 keyword argument
+testShowOff(var1='Var1_2',var2='Var2_1')    # 2 keyword argument (This is how I prefer to do it)
+testShowOff(var2='Var2_2',var1='Var1_3')
+testShowOff('Var1_4', var2='Var2_3')             # 1 positional, 1 keyword argument
+```
+
+
+## Recursion
+
+The word recursion comes from the Latin word recurrere, meaning to return, revert, or recur. In programming, recursion refers to a coding technique in which a function calls itself.
+
+In most cases, recursion isn't necessary, but in some situations, self-referential definition is warranted. Walking through tree-like data structures would be a good example. Such structures are nested, and they readily fit a recursive definition. A non-recursive algorithm for the same task would be quite cumbersome.
+
+Here's a simple example of a recursive function. It takes a number as an argument and prints the numbers from the specified argument down to zero. In the recursive call, the argument is one less than the current value of n, so each recursion moves closer to the base case (which is zero).
+
+```
+def countdown(n):
+    print(n, end=' ')
+    if n == 0:
+        return             # Terminates recursion
+    else:
+        countdown(n - 1)   # Recursive call
+
+countdown(4)
+
+```
+
+**Exercise: Create a function that calculates the factorial of a positive integer. (Factorial: For every number it calculates the product of this number n and the factorial of the previous number. Factorial of 0 and 1 is 1)**
+
+# Classes and Objects
+
+## Definition
+Classes provide a means of bundling data and functionality together. Creating a new class creates a new type of object, allowing new instances of that type to be made. Classes are essentially templates for creating your objects. Each class instance (object) can have attributes attached to it for maintaining its state. Functions of objects are called methods, and they can modify their state. Methods are defined by the object's class.
+
+The generalized form of class definition looks like this:
+
+```
+class ClassName:
+    <statement-1>
+    .
+    .
+    .
+    <statement-N>
+```
+
+
+Class definitions, like function definitions (`def` statements) must be executed before they have any effect.
+
+The statements inside a class definition will usually be function definitions, but other statements are sometimes useful. The function definitions inside a class normally have a peculiar form of argument list — this is explained later.
+
+Class objects support two kinds of operations: attribute references and instantiation. Attribute references will be discussed in the following sections. Class instantiation uses function notation. Just imagine that the class object is a parameterless function that returns a new instance of the class. For example:
+
+```
+class SomeClass:
+    """A simple example class"""
+    i = 12345
+
+x = SomeClass()
+```
+
+`x = SomeClass()` creates a new instance of the class and assigns this object to the local variable x.
+
+You can find out more about class definition syntax by reading this section of Python Documentation.
+
+
+## Variable Access
+
+
+You can use attribute references to access variables inside an object. Attribute references use the standard syntax for all attribute references in Python: `obj.name`. Valid attribute names are all the names that were in the class’s namespace when the class object was created. So, if the class definition looked like this:
+
+```
+class MyClass:
+    year = 2021
+
+    def say_hello(self):
+        return 'hello world'
+
+
+class_var = MyClass()   # MyClass new instance
+    
+class_var.year = 2030   # Change the variable value inside an object
+```
+
+
+then `MyClass.year` and `MyClass.say_hello` are valid attribute references returning an integer and a function object, respectively. Class attributes can be assigned to, so you can change the value of `MyClass.year` by assignment.
+
+## The self parameter
+
+It's time to explain the `self` parameter we saw in previous tasks. The first argument passed to a class method is `self`. This is nothing more than a convention: the name self has no special meaning to Python. It is advised to follow the convention, otherwise your code may be less readable to other Python programmers.
+
+Python will use the self parameter to refer to the object that is created or modified.
+Methods may call other methods by using method attributes of the self argument:
+
+```
+class Bag:
+    def __init__(self):     # Init is explained later on
+        self.data = []
+
+    def add(self, x):
+        self.data.append(x)
+
+    def addtwice(self, x):
+        self.add(x)  # Calling the method `add` from another method
+        self.add(x)
+
+```
+
+## Special __init__ method
+
+The instantiation operation (“calling” a class object) creates an empty object, but it is useful to create objects with instances customized to a specific initial state. Therefore, a class may define a special method named `__init__()`, like this:
+
+```
+class MyClass:
+    def __init__(self):
+        self.data = []
+
+```
+
+`__init__` is one of the reserved methods in Python. If defined, the `__init__()` method is invoked automatically when an instance of the class is created, and it initializes the object and its attributes. It always takes at least one argument, self. So in our example, a new, initialized instance can be obtained by:
+
+x = MyClass()
+The __init__() method may receive arguments for greater flexibility. In that case, arguments given to the class instantiation operator are passed on to __init__(). For example:
+
+```
+class Complex:
+    def __init__(self, real_part, imag_part):
+        self.r = real_part
+        self.i = imag_part
+        self.num = complex(self.r, self.i)
+
+x = Complex(3.0, -4.5)  # Instantiating a complex number
+x.num   # Result(3-4.5j)
+```
+
+## __str__ vs __repr__ methods
+
+Both `str()` and `repr()` methods in Python are used for string representation of an object, but there are some differences. For example:
+
+```
+s = 'Hello World'
+print (str(s))  # Output: Hello World
+print(repr(s))  # Output: 'Hello World'
+
+```
+
+You can see that if we print a string using the `repr()` function, then it prints with a pair of quotes. `str()` is used for creating output for the user, while `repr()` is normally used for debugging and development. `repr()` needs to be unambiguous, and `str()` — to be readable.
+
+Much like `__init__`, the methods `__repr__` and `__str__` are reserved in Python. The `print()` statement and the `str()` built-in function use the `__str__` method defined in the object's class to display its string representation. The repr() built-in function uses the __repr__ method defined in the object's class.
+
+Our own defined class should therefore have a `__repr__` if we need detailed information for debugging. Also, if we think it would be useful to have a string representation for users, we should create a `__str__` function. Check out another implementation of the class Complex in the code editor. Run the code to see what each of the two print statements prints.
+
+```
+class Complex:
+    def __init__(self, real_part, imag_part):
+        self.real = real_part
+        self.img = imag_part
+
+    def __repr__(self):
+        return f'Complex(10, 20)'
+
+    def __str__(self):
+        return f'{self.real} + i{self.img}'
+
+
+x = Complex(2, 5)
+print(str(x))
+print(repr(x))
+
+```
+
+## Class and Instance Variables
+
+In general, instance variables are for data unique to each instance, and class variables are for attributes and methods shared by all instances of the class:
+
+```
+class Cat:
+
+    species = "Felis catus"  
+    
+    def __init__(self, breed, name):
+        self.breed = breed  
+        self.name = name
+
+cleo = Cat('mix', 'Cleo')
+furry = Cat('bengal', 'Furry')
+
+print(cleo.name)    # Output: Cleo
+print(cleo.species) # Output: Felis catus
+print(furry.name)   # Output: Furry
+print(furry.species) # Output: Felis catus
+```
+
+You can see that `species` is a class variable shared by all instances, while `name` and `breed` are instance variable unique to each instance.
+
+Shared data can have possibly surprising effects when involving mutable objects, such as lists and dictionaries. If a class variable is a list and you modify it for one object, it will be changed for all objects of the class (check out the example in the code editor. If you intend using a list to keep track of features unique to each instance, you need to make it an instance attribute.
+
+
+# Modules and packages
+
+## Import module
+As your program gets longer, you may want to split it into several files for easier maintenance. You may also want to use a handy function that you’ve written in several programs without copying its definition into each of them.
+
+Modules in Python are simply Python files with the `.py` extension containing Python definitions and statements. Modules are imported from other modules using the `import` keyword and the file name without the extension `.py`.
+
+Let's say you wrote a script called my_funcs.py with a bunch of functions (func1, func2, etc.). Now, if you want to use those in another script that is placed in the same directory, you can do import my_funcs. This does not import the names of the functions defined in my_funcs directly, but using the module name, you can now access the functions, for example:
+
+```
+my_funcs.func1()
+```
+
+Modules can import other modules. It is customary but not required to place all import statements at the beginning of a module.
+
+## from import
+
+One form of the import statement imports names `from` a module directly. This way, you can use the imported name without the module_name prefix. For example:
+
+```
+from calculator import Add
+
+calc = Add()    # name `Calculator` used directly without prefix `calculator`
+```
+
+This does not introduce the name of the module from which the imports are taken in the local symbol table (so in our example, `calculator` is not defined).
+
+There is even an option to import all names that a module defines:
+
+```
+from calculator import *
+calc = Multiply()
+
+```
+This imports all names except those beginning with an underscore `_`. In most cases, Python programmers do not use this, since it introduces an unknown set of names into the interpreter, possibly hiding some things you have already defined.
+
+If the module name is followed by `as`, then the name following as is bound directly to the imported module:
+
+```
+import my_module as mm
+mm.hello_world()
+```
+
+This is effectively importing the module in the same way that `import my_module` will do, with the only difference of it being available as `mm`.
+
+
+# File input and output
+
+## Open file
+
+Python has a number of built-in functions to read and write information to a file on your computer.
+
+`open()` returns a file object, and is most commonly used with two arguments: `open(filename, mode)`:
+
+```
+f = open('somefile.txt', 'w')
+```
+
+The first argument is a string containing the filename. The second argument is another string containing a few characters describing the way in which the file will be used. It can be `'r'` if the file will only be read, `'w'` – for writing only (an already existing file with the same name will be erased), and `'a'` opens the file for appending – any data written to the file is added to its end. `'r+'` opens the file for both reading and writing. The mode argument is optional; `'r'` will be assumed if it’s omitted.
+
+It is good practice to use the `with` keyword when dealing with file objects. The advantage is that the file is properly closed after the code suite finishes.
+
+```
+with open('somefile.txt') as f:
+    read_data = f.read()
+
+# We can check that the file has been automatically closed.
+f.closed
+
+```
+
+**Important:** If you’re not using the `with` keyword, then you should call `f.close()` to close the file and free up any system resources used by it. You cannot use the file object after it is closed, whether by a `with` statement or by calling `f.close()`.
+
+
+```
+with open('input1.txt', 'r') as file:
+    print(file.read())
+
+
+outfile = open('outfile.txt', 'w') # opening the file in write mode (using `w` argument)
+outfile.write('Hello World')  # writing to the file, the write() method is explained later.
+outfile.close()
+
+
+```
+
+
+# Read file
+
+To read a file’s contents, you can call `f.read(size)`, which reads some quantity of data and returns it as a string. When size is omitted or negative, the entire contents of the file will be read and returned.
+
+```
+with open('somefile.txt') as f:
+    print(f.read())
+
+Here's everything that's in the file.\n         # Output supposing that the file has one line as context
+
+```
+
+**Note:** there will be a problem if the file is twice as large as your machine’s memory.
+
+`f.readline()` reads a single line from the file; a newline character (`\n`) is left at the end of the string and is only omitted on the last line of the file if the file doesn’t end in a newline. If `f.readline()` returns an empty string, the end of the file has been reached, while a blank line is represented by \n, a string containing only a single newline.
+
+```
+f.readline()
+'This is the first line of the file.\n'
+f.readline()
+'Second line of the file\n'
+f.readline()
+''
+```
+
+For reading lines from a file, you can loop over the file object. This is memory efficient, fast, and makes the code simple:
+
+```
+for line in f:
+    print(line)
+This is the first line of the file.
+Second line of the file
+```
+
+If you want to read all the lines of a file in a list, you can also use `list(f)` or `f.readlines()`.
+
+## Write to file
+
+As we already mentioned, if you use `'w'` as the second argument in `open()`, the file opens for writing only. A new empty file will be created. If another file with the same name already exists, it will be erased. If you want to add some content to an existing file, you should use the `'a'` (append) modifier.
+
+Another file object method, `f.write(string)`, writes the contents of a string to the file, returning the number of characters written.
+
+```
+f.write('This is a test\n')
+15
+```
+
+Other types of objects in text mode need to be converted into a string first:
+
+```
+value = ('the answer', 42)
+s = str(value)  # convert the tuple into string
+f.write(s)
+18
+```
+Where the specified text will be inserted in the file depends on the file mode (`'a'` vs `'w'`).
+
+`'a'`: the text will be inserted at the end of the file.
+
+`'w'`: the file will be emptied before the text will be inserted at the beginning.
+
+If you want to include a symbol such as a line break, into your string (to start from a new line), add it with a +:
+
+```
+f.write('\n' + 'string,' + ' ' + 'another string')
+```
+
+This will add a new line and write 'string, another string'.
+
 _Sources: PyCharm Edu, Stanford Course: Introduction to Python_
