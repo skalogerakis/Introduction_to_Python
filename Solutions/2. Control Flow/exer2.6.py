@@ -26,3 +26,16 @@ while(True):
 		break
 
 print(curr_number)
+
+# Or a simpler solution
+
+number = 1
+c_range = 1
+while(c_range < 11):
+	if(number % c_range == 0):
+		c_range+=1
+	else:
+		c_range=1
+		number+=1
+
+print(number)
